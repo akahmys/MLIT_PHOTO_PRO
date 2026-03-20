@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JS PHOTO PRO v3.11.1 — 日本下水道事業団 電子納品写真管理</title>
+    <title>MLIT PHOTO PRO v1.0.0 — 国土交通省 電子納品写真管理</title>
     <script>
         (function () {
             const ow = console.warn;
@@ -28,17 +28,17 @@
         rel="stylesheet">
     <style>
         :root {
-            --js-navy: #002d6e;
-            --js-blue: #0055b3;
-            --js-sky: #0ea5e9;
+            --js-navy: #1a472a;
+            --js-blue: #2f855a;
+            --js-sky: #4ade80;
             --js-accent: #f59e0b;
             --js-green: #10b981;
             --js-red: #ef4444;
-            --js-bg: #f0f4f8;
+            --js-bg: #f5f8f6;
             --js-card: #ffffff;
-            --js-border: #dde3ec;
-            --js-text: #1a2433;
-            --js-muted: #64748b;
+            --js-border: #dde3df;
+            --js-text: #1e2923;
+            --js-muted: #6b7280;
         }
 
         * {
@@ -605,12 +605,11 @@
 <!ELEMENT ソフトメーカ用TAG (#PCDATA)>`;
 
         /**
-         * 写真区分マスタ（JS工事記録写真電子管理要領 第2章 付表1）
+         * 写真区分マスタ（国土交通省 土木工事共通仕様書等 準拠）
          */
         const PHOTO_CATEGORIES = [
             "着手前及び完成写真",
             "施工状況写真",
-            "機器製作写真",
             "安全管理写真",
             "使用材料写真",
             "品質管理写真",
@@ -621,125 +620,60 @@
         ];
 
         /**
-         * 工種マスタ（JS工事記録写真電子管理要領 付表2 工事種別体系 準拠）
-         * discipline: 大分類（工事種別）
-         * workTypes: 工種
-         *   types: 種別
-         *     subdivisions: 細別
+         * 工種マスタ（国土交通省 土木工事共通仕様書等 汎用版）
          */
         const WORK_MASTER = [
             {
                 discipline: "土木",
                 workTypes: [
                     {
-                        name: "処理施設工(土木)",
+                        name: "道路土工",
                         types: [
-                            { name: "反応タンク工", subdivisions: ["土工", "基礎工", "躯体工", "地盤改良工", "仮設工", "その他"] },
-                            { name: "最初沈殿池施設工", subdivisions: ["土工", "基礎工", "躯体工", "整備工", "仮設工", "その他"] },
-                            { name: "最終沈殿池施設工", subdivisions: ["土工", "基礎工", "躯体工", "仮設工", "その他"] },
-                            { name: "汚泥処理施設工", subdivisions: ["土工", "基礎工", "躯体工", "仮設工", "その他"] },
-                            { name: "ポンプ場施設工", subdivisions: ["土工", "基礎工", "躯体工", "仮設工", "その他"] },
-                            { name: "沈砂池施設工", subdivisions: ["土工", "基礎工", "躯体工", "仮設工", "その他"] },
-                            { name: "流量調整施設工", subdivisions: ["土工", "基礎工", "躯体工", "仮設工", "その他"] },
-                            { name: "接触ばっ気施設工", subdivisions: ["土工", "基礎工", "躯体工", "仮設工", "その他"] },
-                            { name: "高度処理施設工", subdivisions: ["土工", "基礎工", "躯体工", "仮設工", "その他"] },
-                            { name: "消毒設備施設工", subdivisions: ["土工", "基礎工", "躯体工", "その他"] },
-                            { name: "放流施設工", subdivisions: ["土工", "基礎工", "躯体工", "護岸工", "仮設工", "その他"] },
-                            { name: "水処理施設改良工", subdivisions: ["躯体補修工", "断面修復工", "ライニング工", "その他"] },
+                            { name: "掘削工", subdivisions: ["土工", "岩掘削", "その他"] },
+                            { name: "盛土工", subdivisions: ["路体盛土", "路床盛土", "その他"] },
+                            { name: "法面工", subdivisions: ["植生工", "吹付工", "その他"] },
                         ]
                     },
                     {
-                        name: "管路施設工(土木)",
+                        name: "河川土工",
                         types: [
-                            { name: "下水管渠工(開削)", subdivisions: ["管路土工", "管据付工", "マンホール工", "基礎工", "仮設工", "路面復旧工", "その他"] },
-                            { name: "下水管渠工(推進)", subdivisions: ["発進立坑工", "到達立坑工", "推進工", "仮設工", "その他"] },
-                            { name: "下水管渠工(シールド)", subdivisions: ["発進立坑工", "到達立坑工", "シールド掘進工", "仮設工", "その他"] },
-                            { name: "マンホール工", subdivisions: ["既製品マンホール工", "現場打マンホール工", "蓋工", "インバート工", "その他"] },
-                            { name: "管渠更生工", subdivisions: ["形成工法", "製管工法", "充填工法", "その他"] },
-                            { name: "管渠修繕工", subdivisions: ["部分補修工", "取付管補修工", "その他"] },
-                            { name: "道路復旧工", subdivisions: ["アスファルト舗装工", "コンクリート舗装工", "その他"] },
+                            { name: "掘削工", subdivisions: ["河道掘削", "その他"] },
+                            { name: "築堤工", subdivisions: ["築堤盛土", "その他"] },
+                            { name: "護岸工", subdivisions: ["法覆工", "根固め工", "その他"] },
                         ]
                     },
                     {
-                        name: "土工",
+                        name: "橋梁下部工",
                         types: [
-                            { name: "掘削工", subdivisions: ["床掘工", "余掘工", "残土処理", "その他"] },
-                            { name: "埋戻し工", subdivisions: ["普通埋戻工", "砂埋戻工", "その他"] },
-                            { name: "仮設土留工", subdivisions: ["親杭横矢板工", "鋼矢板工", "アンカー工", "その他"] },
-                            { name: "地盤改良工", subdivisions: ["薬液注入工", "高圧噴射撹拌工", "深層混合処理工", "その他"] },
+                            { name: "基礎工", subdivisions: ["杭基礎", "直接基礎", "ケーソン基礎", "その他"] },
+                            { name: "橋台工", subdivisions: ["土工", "コンクリート工", "鉄筋工", "その他"] },
+                            { name: "橋脚工", subdivisions: ["土工", "コンクリート工", "鉄筋工", "その他"] },
                         ]
                     },
                     {
                         name: "共通仮設工",
                         types: [
-                            { name: "安全施設工", subdivisions: ["仮囲工", "安全標識工", "交通誘導警備員", "その他"] },
-                            { name: "排水工", subdivisions: ["釜場排水", "ウェルポイント工", "その他"] },
-                            { name: "準備工", subdivisions: ["仮設道路", "仮設電力", "仮設給水", "その他"] },
+                            { name: "仮設工", subdivisions: ["足場工", "仮締切工", "仮設道路", "その他"] },
+                            { name: "安全施設工", subdivisions: ["仮囲い", "保安施設", "その他"] },
                         ]
                     },
                 ]
             },
             {
-                discipline: "建築",
+                discipline: "営繕",
                 workTypes: [
                     {
-                        name: "処理施設工(建築)",
+                        name: "建築工事",
                         types: [
-                            { name: "管理棟", subdivisions: ["仮設工事", "土工事", "杭基礎工事", "コンクリート工事", "鉄骨工事", "防水工事", "外壁工事", "建具工事", "内装工事", "設備工事"] },
-                            { name: "機械棟", subdivisions: ["仮設工事", "土工事", "杭基礎工事", "コンクリート工事", "防水工事", "外壁工事", "建具工事", "その他"] },
-                            { name: "ポンプ棟", subdivisions: ["仮設工事", "土工事", "コンクリート工事", "防水工事", "その他"] },
-                            { name: "解体工事", subdivisions: ["仮設工事", "解体撤去工", "残材処理", "その他"] },
-                            { name: "改修工事", subdivisions: ["外装改修", "屋上防水工事", "内装改修", "その他"] },
+                            { name: "仮設工事", subdivisions: ["足場", "仮囲い", "その他"] },
+                            { name: "土工・地業工事", subdivisions: ["根切り", "埋戻し", "杭打ち", "その他"] },
+                            { name: "躯体工事", subdivisions: ["鉄筋", "型枠", "コンクリート", "鉄骨", "その他"] },
+                            { name: "外装工事", subdivisions: ["屋根", "防水", "外壁", "建具", "その他"] },
+                            { name: "内装工事", subdivisions: ["床", "壁", "天井", "その他"] },
                         ]
                     },
                 ]
-            },
-            {
-                discipline: "機械",
-                workTypes: [
-                    {
-                        name: "処理施設工(機械)",
-                        types: [
-                            { name: "最初沈殿池設備工", subdivisions: ["汚泥かき寄せ機", "汚泥ポンプ", "スカムスキマー", "配管・弁類", "ダクト", "鋼製加工品", "その他"] },
-                            { name: "反応タンク設備工", subdivisions: ["送風機", "散気装置", "撹拌機", "配管・弁類", "水中ポンプ", "試運転・測定", "その他"] },
-                            { name: "最終沈殿池設備工", subdivisions: ["汚泥かき寄せ機", "汚泥返送ポンプ", "スカムスキマー", "配管・弁類", "その他"] },
-                            { name: "汚泥処理設備工", subdivisions: ["濃縮タンク撹拌機", "脱水機", "乾燥機", "汚泥ポンプ", "配管・弁類", "その他"] },
-                            { name: "ポンプ場設備工", subdivisions: ["ポンプ本体", "電動機", "除塵設備", "配管・弁類", "制水設備", "その他"] },
-                            { name: "沈砂池設備工", subdivisions: ["除砂設備", "砂洗浄設備", "除塵設備", "配管・弁類", "その他"] },
-                            { name: "消毒設備工", subdivisions: ["塩素注入設備", "紫外線消毒設備", "オゾン処理設備", "その他"] },
-                            { name: "高度処理設備工", subdivisions: ["ろ過設備", "膜処理設備", "脱窒設備", "その他"] },
-                            { name: "クレーン・吊上設備工", subdivisions: ["天井走行クレーン", "橋形クレーン", "ホイスト", "その他"] },
-                            { name: "換気・空調設備工", subdivisions: ["換気設備", "空調設備", "除臭設備", "その他"] },
-                            { name: "機器製作", subdivisions: ["製作準備", "材料確認", "加工・組立", "検査・試験", "完成品確認"] },
-                        ]
-                    },
-                    {
-                        name: "管路施設工(機械)",
-                        types: [
-                            { name: "マンホールポンプ設備工", subdivisions: ["ポンプ本体", "電動機", "配管・弁類", "制御盤", "その他"] },
-                            { name: "制水扉設備工", subdivisions: ["制水扉本体", "戸当金具", "操作装置", "その他"] },
-                        ]
-                    },
-                ]
-            },
-            {
-                discipline: "電気",
-                workTypes: [
-                    {
-                        name: "処理施設工(電気)",
-                        types: [
-                            { name: "受変電設備工", subdivisions: ["引込受電盤", "変圧器盤", "高圧配電盤", "低圧配電盤", "コンデンサ盤", "その他"] },
-                            { name: "自家発電設備工", subdivisions: ["発電機本体", "制御盤", "燃料設備", "試運転", "その他"] },
-                            { name: "監視制御設備工", subdivisions: ["中央監視盤", "現場操作盤", "計装機器", "PLC制御盤", "通信設備", "その他"] },
-                            { name: "電動機制御盤工", subdivisions: ["MCC盤", "インバータ盤", "スターデルタ盤", "その他"] },
-                            { name: "配線・配管工", subdivisions: ["高圧ケーブル工", "低圧ケーブル工", "電線管工", "トレー工", "接地工", "その他"] },
-                            { name: "照明設備工", subdivisions: ["屋外照明", "屋内照明", "非常照明", "その他"] },
-                            { name: "雷保護設備工", subdivisions: ["避雷針", "接地工事", "サージ対策", "その他"] },
-                            { name: "通信・放送設備工", subdivisions: ["電話設備", "放送設備", "インターホン設備", "その他"] },
-                        ]
-                    },
-                ]
-            },
+            }
         ];
 
         /* ======================================================
@@ -1712,7 +1646,7 @@
                             <div className="flex items-center gap-3 mb-8">
                                 <div className="bg-[#002d6e] rounded-xl p-3"><Ic k="camera" size={28} cls="text-white" /></div>
                                 <div>
-                                    <h1 className="text-xl font-black text-[#002d6e] tracking-tight">JS PHOTO PRO</h1>
+                                    <h1 className="text-xl font-black text-[var(--js-navy)] tracking-tight">MLIT PHOTO PRO</h1>
                                     <p className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">v3.11.1 — 日本下水道事業団 電子納品対応</p>
                                 </div>
                             </div>
@@ -1779,7 +1713,7 @@
                     <header className="app-header no-print">
                         <div className="flex items-center gap-3">
                             <div className="bg-[#0055b3] rounded-lg p-1.5"><Ic k="camera" size={20} cls="text-white" /></div>
-                            <span className="font-black text-lg tracking-tight">JS PHOTO PRO</span>
+                            <span className="font-black text-lg tracking-tight">MLIT PHOTO PRO</span>
                             <button onClick={() => setIsChangeStdModalOpen(true)} className={`badge ${STANDARDS[selectedStandard]?.color} text-[11px] px-2.5 py-1 hover:opacity-80 transition-opacity ml-2 cursor-pointer`} title="適用基準を変更">
                                 {STANDARDS[selectedStandard]?.label} <span className="ml-1 text-[9px]">▼</span>
                             </button>
