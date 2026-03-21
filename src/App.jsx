@@ -1,8 +1,8 @@
         import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { STANDARDS, PHOTO_CATEGORIES, WORK_MASTER } from './constants/master.js';
-import { sanitizeForJS, esc, dateToXml, dateFromXml, toSerial, makeFileName, parseFileNum, parseSerialNum, dateToStr, readExifDate, findDiscipline, getPhotoDir, buildXmlMapFromNodes, readPhotoXmlNodes, CONCURRENCY_LIMIT, executeChunked, ITEMS_PER_PAGE, validatePhoto } from './utils/helpers.js';
-import { buildPhotoXml, saveXmlToDir, saveDtdToFolder } from './utils/xml-builder.js';
-import { icons, Ic } from './components/Icons.jsx';
+import { sanitizeForJS, makeFileName, parseFileNum, readExifDate, findDiscipline, getPhotoDir, buildXmlMapFromNodes, readPhotoXmlNodes, CONCURRENCY_LIMIT, executeChunked, ITEMS_PER_PAGE, validatePhoto, toSerial } from './utils/helpers.js';
+import { saveXmlToDir, saveDtdToFolder } from './utils/xml-builder.js';
+import { Ic } from './components/Icons.jsx';
 import { LazyImage } from './components/LazyImage.jsx';
 import './App.css';
 
@@ -120,7 +120,7 @@ import './App.css';
                         if (/><シリアル番号>P\d{7}<\/シリアル番号>/.test(decoded)) legacyFormatDetected = true;
                         if (/><撮影年月日>\d{8}<\/撮影年月日>/.test(decoded)) legacyFormatDetected = true;
                         xmlMap = buildXmlMapFromNodes(nodes);
-                    } catch { }
+                    } catch { /* ignore */ }
 
                     // PICフォルダのファイルを列挙してphotoオブジェクト配列を構築
                     const found = [];
@@ -174,17 +174,17 @@ import './App.css';
                             if (d.includes("202303")) autoStd = "R06";
                             else if (d.includes("201603") || d.includes("202003") || d.includes("PHOTO05")) autoStd = "H30";
                         }
-                    } catch { }
+                    } catch { /* ignore */ }
                     if (autoStd) { await loadFolder(h, autoStd); }
                     else { setTempHandle(h); setStandardSelectMode('existing'); setMode('select_std'); }
-                } catch { }
+                } catch { /* ignore */ }
             };
 
             const handleNewProject = async () => {
                 try {
                     const h = await window.showDirectoryPicker({ mode: 'readwrite' });
                     setTempHandle(h); setStandardSelectMode('new'); setMode('select_std');
-                } catch { }
+                } catch { /* ignore */ }
             };
 
             const handleStandardChosen = async (stdId) => {
@@ -266,7 +266,7 @@ import './App.css';
                     const picDir = await photoDir.getDirectoryHandle(std.picFolder);
                     for (const id of selectedIds) {
                         const p = photos.find(x => x.id === id);
-                        if (p) { try { await picDir.removeEntry(p.name); } catch { } }
+                        if (p) { try { await picDir.removeEntry(p.name); } catch { /* ignore */ } }
                     }
                     const next = photos.filter(x => !selectedIds.has(x.id)).map((p, i) => ({ ...p, serialNo: toSerial(i + 1) }));
                     setPhotos(next); setSelectedIds(new Set());
@@ -334,7 +334,7 @@ import './App.css';
                                     const w = await th.createWritable(); await w.write(f); await w.close();
                                     await drawfDir.removeEntry(task.oldName);
                                 }
-                            } catch (e) { }
+                            } catch { /* ignore */ }
                         });
                         await executeChunked(refTasks, async (task) => {
                             try {
@@ -346,7 +346,7 @@ import './App.css';
                                     const w = await fh.createWritable(); await w.write(f); await w.close();
                                     await drawfDir.removeEntry(task.tmpName);
                                 }
-                            } catch (e) { }
+                            } catch { /* ignore */ }
                         });
                     }
 
@@ -400,7 +400,7 @@ import './App.css';
                     try {
                         const { nodes } = await readPhotoXmlNodes(srcPhotoDir);
                         srcXmlMap = buildXmlMapFromNodes(nodes);
-                    } catch { }
+                    } catch { /* ignore */ }
 
                     const photoDir = await getPhotoDir(rootHandle, std);
                     const destPicDir = await photoDir.getDirectoryHandle(std.picFolder);

@@ -12,6 +12,7 @@ export const LazyImage = ({ file, className, forceLoad = false }) => {
                 let objUrl = '';
                 if (forceLoad) {
                     objUrl = URL.createObjectURL(file);
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
                     setUrl(objUrl);
                     return () => URL.revokeObjectURL(objUrl);
                 }

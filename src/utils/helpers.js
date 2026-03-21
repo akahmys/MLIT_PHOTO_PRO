@@ -13,6 +13,7 @@ export const sanitizeForJS = (text) => {
             if (!text) return "";
             return String(text)
                 .replace(/[０-９ａ-ｚＡ-Ｚ]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xFEE0))
+                // eslint-disable-next-line no-control-regex
                 .replace(/[\x00-\x1F\x7F]/g, '')
                 .slice(0, 255);
         };
@@ -43,7 +44,7 @@ export const dateFromXml = dateToXml; // 変換ロジックが同一のためエ
          * シリアル番号生成
          * 出典: ZH005-00-24-A 表5-1 シリアル番号欄
          *   「写真通し番号。123枚目を"000123"のように0を付けて記入してはいけない」
-         *   データ表現: 半角数字　文字数: 7
+         *   データ表現: 半角数字 文字数: 7
          * ⚠️ ゼロ埋めなし・Pプレフィックスなし・純粋な半角数字のみ
          * 例: toSerial(1) → "1", toSerial(123) → "123"
          */
