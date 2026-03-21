@@ -605,8 +605,8 @@ import './App.css';
                             <div className="flex items-center gap-3 mb-8">
                                 <div className="bg-[#002d6e] rounded-xl p-3"><Ic k="camera" size={28} cls="text-white" /></div>
                                 <div>
-                                    <h1 className="text-xl font-black text-[#002d6e] tracking-tight">JS PHOTO PRO</h1>
-                                    <p className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">v3.11.1 — 日本下水道事業団 電子納品対応</p>
+                                    <h1 className="text-xl font-black text-[#002d6e] tracking-tight">MLIT PHOTO PRO</h1>
+                                    <p className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">v0.1 — 国土交通省 電子納品対応</p>
                                 </div>
                             </div>
                             {mode === 'welcome' && (
@@ -672,7 +672,7 @@ import './App.css';
                     <header className="app-header no-print">
                         <div className="flex items-center gap-3">
                             <div className="bg-[#0055b3] rounded-lg p-1.5"><Ic k="camera" size={20} cls="text-white" /></div>
-                            <span className="font-black text-lg tracking-tight">JS PHOTO PRO</span>
+                            <span className="font-black text-lg tracking-tight">MLIT PHOTO PRO</span>
                             <button onClick={() => setIsChangeStdModalOpen(true)} className={`badge ${STANDARDS[selectedStandard]?.color} text-[11px] px-2.5 py-1 hover:opacity-80 transition-opacity ml-2 cursor-pointer`} title="適用基準を変更">
                                 {STANDARDS[selectedStandard]?.label} <span className="ml-1 text-[9px]">▼</span>
                             </button>
@@ -859,7 +859,7 @@ import './App.css';
                             <span className="flex items-center gap-1.5"><Ic k="camera" size={12} /> {photos.length}枚</span>
                             {errorCount > 0 && <span className="flex items-center gap-1.5 text-orange-400"><Ic k="alertCircle" size={12} /> 未完了 {errorCount}件</span>}
                         </div>
-                        <div className="flex items-center gap-4"><span>{STANDARDS[selectedStandard]?.versionTag}</span><span>v3.11.1</span></div>
+                        <div className="flex items-center gap-4"><span>{STANDARDS[selectedStandard]?.versionTag}</span><span>v0.1</span></div>
                     </div>
 
                     {previewPhoto && (
