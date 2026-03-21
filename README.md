@@ -1,29 +1,16 @@
-# MLIT PHOTO PRO
+# React + Vite
 
-国土交通省の電子納品基準に完全準拠した電子納品写真管理および `PHOTO.XML` 生成ツールです。
-JS PHOTO PRO プロジェクトからフォークし、国交省向けの工種体系やデザインテーマに最適化されています。
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 特徴
-- **完全ローカル動作**: ブラウザの File System Access API を用い、サーバー通信を行わずにローカルの電子納品フォルダを直接編集します。オフラインでも動作可能です。
-- **要領基準に完全対応**: 国土交通省の基準（「土木201603-01」および「土木202303-01」相当）の双方に対応。基準ごとに適切なDTDとXML記述を出力します。
-- **要領準拠の厳格なバリデーション**: 工事種別や写真区分に応じた必須項目（種別、細別等）を判定し、警告をリアルタイムで表示します。
-- **EXIF自動抽出＆オートセーブ**: ドラッグ＆ドロップによるインポート時に撮影日を自動抽出し、ファイルに対するすべての変更は随時 `PHOTO.XML`（Shift_JIS形式）に上書き保存されます。
-- **スマートリネーム**: プロジェクト内の表示順に合わせて、ファイル名を `P0000001.JPG` の形式で一括リネーム・最適化できます。
-- **写真台帳印刷**: ブラウザの印刷機能から、国交省要領に基づいたA4縦・1ページ2枚構成の写真台帳を直接出力（プレビュー / PDF保存）可能です。
+Currently, two official plugins are available:
 
-## 使い方
-1. 最新のPC版ブラウザ（Google Chrome, Microsoft Edge など）で、プロジェクト直下にある `index.html` を開きます。
-   - ※拡張機能（Live Server等）やローカルサーバー経由、または直接ファイルを開く形でも動作します。
-2. 「新規プロジェクト作成」または「既存フォルダを開く」を選択します。
-3. エクスプローラーやFinderから写真ファイル（JPEG等）をドラッグ＆ドロップして読み込みます。
-4. 写真を選択し、右側のパネルからタイトルや工種などを入力します。
-5. 変更した内容は自動的に元フォルダの `PHOTO.XML` に保存されます。
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## 開発環境
-- React 18 / ReactDOM
-- Tailwind CSS
-- (Babel standalone, exifr, encoding-japanese などのブラウザ向けライブラリを使用)
+## React Compiler
 
-## ライセンス
-このプロジェクトは [MIT License](LICENSE) のもとで公開・提供されています。
-商用利用、改変、再配布などが原則として自由に行えます。
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
