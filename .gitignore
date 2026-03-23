@@ -12,6 +12,15 @@ dist
 dist-ssr
 *.local
 
+# App-specific
+app/node_modules
+app/dist
+app/.vite
+app/.system_generated
+
+# Test data
+tests/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

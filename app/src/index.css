@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #002d6e;
+}
+
+body {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  font-family: sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+.glass-panel {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.glass-card {
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background-color: white;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: bold;
+}
+
+.btn-ghost {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: #475569;
+}
